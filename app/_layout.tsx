@@ -35,6 +35,24 @@ export default function RootLayout() {
           headerTitle: "profile page",
           headerShown: false
         }} />
+        <Stack.Screen 
+        name="drugsearch" 
+        options={{
+          headerTitle: "profile page",
+          headerShown: false
+        }} />
+        <Stack.Screen 
+        name="results" 
+        options={{
+          headerTitle: "profile page",
+          headerShown: false
+        }} />
+        <Stack.Screen 
+        name="herbalist" 
+        options={{
+          headerTitle: "profile page",
+          headerShown: false
+        }} />
     </Stack> 
     </ThemeProvider>
   )

@@ -24,6 +24,40 @@ const router = useRouter();
         </View>
       </ImageBackground>
 
+       {/* 🌿 Cameroon Herbalist Section */}
+    <View style={styles.herbalistCard}>
+      <Text style={styles.herbalistTitle}>🌿 Cameroon Herbalist</Text>
+
+      <View style={styles.herbalistRow}>
+        <Text style={styles.herbalistDesc}>Solution Bio, Fak, Yde</Text>
+        <Text style={styles.herbalistPhone}>📞 682258144</Text>
+      </View>
+
+      <View style={styles.herbalistRow}>
+        <Text style={styles.herbalistDesc}>La Boutique Du Naturel, Essi Ydé</Text>
+        <Text style={styles.herbalistPhone}>📞 695125928</Text>
+      </View>
+
+      <View style={styles.herbalistRow}>
+        <Text style={styles.herbalistDesc}>Les Petits Secrets de Bella, Nkom, Ydé</Text>
+        <Text style={styles.herbalistPhone}>📞 670835223</Text>
+      </View>
+
+      <View style={styles.herbalistRow}>
+        <Text style={styles.herbalistDesc}>Maison du Bien-être de Bonamouss, Ydé</Text>
+        <Text style={styles.herbalistPhone}>📞 699822942</Text>
+      </View>
+
+      <View style={styles.herbalistRow}>
+        <Text style={styles.herbalistDesc}>ONG-SANTÉ AVANT TOUT, Nkomo Ydé</Text>
+        <Text style={styles.herbalistPhone}>📞 672000001</Text>
+      </View>
+
+      <TouchableOpacity style={styles.herbalistBtn}>
+        <Text style={styles.herbalistBtnText}>View more Cameroonist</Text>
+      </TouchableOpacity>
+    </View>
+
       {/* 📞 Bloc Urgent Numbers */}
       <View style={styles.card}>
         <View style={styles.cardHeader}>
@@ -91,12 +125,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    marginTop:40,
   },
   heroSection: {
-    height: 220,
+    height: 250,
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 25,
   },
   overlay: {
     backgroundColor: 'rgba(0,0,0,0.4)',
@@ -107,6 +143,57 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 20,
   },
+  herbalistCard: {
+  marginHorizontal: 15,
+  marginBottom: 20,
+  padding: 15,
+  borderRadius: 10,
+  backgroundColor: '#F0FAF2',
+  borderWidth: 1,
+  borderColor: '#D6EBD6',
+},
+
+herbalistTitle: {
+  fontSize: 16,
+  fontWeight: 'bold',
+  marginBottom: 12,
+  color: '#006400',
+},
+
+herbalistRow: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  marginBottom: 20,
+},
+
+herbalistDesc: {
+  fontSize: 13,
+  color: '#333',
+  flex: 1,
+},
+
+herbalistPhone: {
+  fontSize: 13,
+  color: '#1C8D3C',
+  marginLeft: 10,
+},
+
+herbalistBtn: {
+  backgroundColor: '#007D3A',
+  paddingVertical: 10,
+  paddingHorizontal: 20,
+  borderRadius: 6,
+  marginTop: 20,
+  alignSelf: 'flex-start',
+  marginLeft: 70,
+},
+
+herbalistBtnText: {
+  color: 'white',
+  fontSize: 12,
+  fontWeight: '600',
+},
+
   heroText: {
     color: '#fff',
     fontSize: 16,

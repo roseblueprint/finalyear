@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "245222626364",
+    "project_id": "pharmacy-nearx",
+    "storage_bucket": "pharmacy-nearx.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:245222626364:android:847c139c5ed6191c275f39",
+        "android_client_info": {
+          "package_name": "com.anonymous.pharmacy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAV34SFmlpEfwJcDqK0RO_SVdZIwohOHaY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:245222626364:android:40096d1ca397c474275f39",
+        "android_client_info": {
+          "package_name": "com.example.nearx_pharma"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAV34SFmlpEfwJcDqK0RO_SVdZIwohOHaY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
