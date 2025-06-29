@@ -180,7 +180,7 @@ export default function HomeScreen() {
       )}
 
       {/* 📜 Scrollable content */}
-      <ScrollView style={styles.scrollSection} showsVerticalScrollIndicator={false}>
+     
         <View style={styles.filterContainer}>
     <Text style={styles.sectionTitle}>View Pharmacies within</Text>
     <Picker
@@ -195,7 +195,7 @@ export default function HomeScreen() {
     </Picker>
   </View>
 );
-
+       <ScrollView style={styles.scrollSection} showsVerticalScrollIndicator={false}>
         <FlatList
         data={filteredPharmacies}
         keyExtractor={(item) => item.id.toString()}
@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10, paddingVertical: 6, marginRight: 10,
   },
   searchInput: { flex: 1, fontSize: 15, marginHorizontal: 8, color: '#000' },
-  map: { height: 280, width: '100%', borderRadius: 12, marginBottom: 0 },
+  map: { height: 270, width: '100%', borderRadius: 12, marginBottom: 0 },
   loadingText: { textAlign: 'center', fontSize: 14, color: '#666', marginVertical: 10 },
   scrollSection: { flex: 1, paddingBottom: 40 },
   sectionTitle: { fontSize: 16, fontWeight: '600', marginHorizontal: 10, marginTop: 10 },

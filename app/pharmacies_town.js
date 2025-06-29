@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image } from 'expo-image';
 
 export default function PharmacyTownsScreen() {
   const router = useRouter();
@@ -29,12 +30,12 @@ export default function PharmacyTownsScreen() {
   return (
     <ScrollView style={styles.container}>
     
-      {/* <View style={styles.container}>
+      <View style={styles.container}>
       <Image
-        source={require('../../assets/images/logo1.png')}
+        source={require('../assets/images/cameroon.png')}
         style={styles.image}
       />
-    </View> */}
+    </View>
 
 
       {/* 📝 Texte entre image et régions */}
@@ -72,15 +73,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    marginTop:20,
   },
-  topImage: {
-    width: '100%',
-    height: 180,
-  },
+  image: {
+  width: '100%',
+  height: 240,
+  resizeMode: 'cover',
+  borderBottomLeftRadius: 10,
+  borderBottomRightRadius: 10,
+  
+},
   headerTextContainer: {
     marginTop: 15,
     marginBottom: 10,
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
   },
   headerText: {
     fontSize: 18,
@@ -92,8 +98,8 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   column: {
-    width: 250,
-    marginRight: 15,
+    width: 160,
+    marginRight: 5,
   },
   regionContainer: {
     marginBottom: 30,

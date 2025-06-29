@@ -7,10 +7,10 @@ export default function PharmacyTownsScreen() {
 const router = useRouter();
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-
+      
       {/* 🖼️ Section Image avec texte et bouton */}
       <ImageBackground
-        source={require('../../assets/images/pharma1.png')}
+        source={require('../../assets/images/pharmacies.png')}
         style={styles.heroSection}
         resizeMode="cover"
       >
@@ -58,7 +58,24 @@ const router = useRouter();
       </TouchableOpacity>
     </View>
 
-      {/* 📞 Bloc Urgent Numbers */}
+      {/* 🏥 Bloc Pharmacies */}
+      <View style={styles.card}>
+        <View style={styles.cardHeader}>
+          <Ionicons name="medkit-outline" size={20} color="#0B82DC" />
+          <Text style={styles.cardTitle}>Pharmacies</Text>
+        </View>
+        {['Dschang', 'Bafoussam', 'Buea', 'Yaoundé'].map((city, index) => (
+          <View key={index} style={styles.row}>
+            <Text style={styles.city}>{city}</Text>
+            <Ionicons name="call-outline" size={16} color="#0B82DC" />
+          </View>
+        ))}
+        <TouchableOpacity style={styles.button} onPress={() => router.push('/pharmacies_town')}>
+          <Text style={styles.buttonText}>View all towns</Text>
+        </TouchableOpacity>
+      </View>
+
+       {/* 📞 Bloc Urgent Numbers */}
       <View style={styles.card}>
         <View style={styles.cardHeader}>
           <Ionicons name="alert-circle-outline" size={20} color="#0B82DC" />
@@ -78,23 +95,6 @@ const router = useRouter();
         ))}
         <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText}>View more numbers</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* 🏥 Bloc Pharmacies */}
-      <View style={styles.card}>
-        <View style={styles.cardHeader}>
-          <Ionicons name="medkit-outline" size={20} color="#0B82DC" />
-          <Text style={styles.cardTitle}>Pharmacies</Text>
-        </View>
-        {['Dschang', 'Bafoussam', 'Buea', 'Yaoundé'].map((city, index) => (
-          <View key={index} style={styles.row}>
-            <Text style={styles.city}>{city}</Text>
-            <Ionicons name="call-outline" size={16} color="#0B82DC" />
-          </View>
-        ))}
-        <TouchableOpacity style={styles.button} onPress={() => router.push('/pharmacies_town')}>
-          <Text style={styles.buttonText}>View all towns</Text>
         </TouchableOpacity>
       </View>
 
@@ -164,6 +164,8 @@ herbalistRow: {
   flexDirection: 'row',
   justifyContent: 'space-between',
   marginBottom: 20,
+  borderBottomWidth: 0.7,
+  borderBottomColor: '#e6e6e6',
 },
 
 herbalistDesc: {
@@ -183,7 +185,7 @@ herbalistBtn: {
   paddingVertical: 10,
   paddingHorizontal: 20,
   borderRadius: 6,
-  marginTop: 20,
+  marginTop: 0,
   alignSelf: 'flex-start',
   marginLeft: 70,
 },
@@ -198,8 +200,8 @@ herbalistBtnText: {
     color: '#fff',
     fontSize: 16,
     textAlign: 'center',
-    marginBottom: 12,
-    fontWeight: '600',
+    marginBottom: 30,
+    fontWeight: '700',
   },
   heroButton: {
     backgroundColor: '#0B82DC',
