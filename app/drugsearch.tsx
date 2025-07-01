@@ -1,46 +1,59 @@
-// app/search/SearchDrugScreen.tsx
-import { View, TextInput, Button, StyleSheet, Alert } from 'react-native';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 
-export default function SearchDrugScreen() {
+const allDrugs = ['Paracetamol', 'Ibuprofen', 'Amoxicillin', 'Cough Syrup', 'Vitamin C'];
+
+export default function DrugSearchScreen() {
   const [query, setQuery] = useState('');
+  const [filteredSuggestions, setFilteredSuggestions] = useState([]);
   const router = useRouter();
 
-  const handleSearch = () => {
-    if (!query.trim()) {
-      return Alert.alert('Error', 'Please enter a drug name');
-    }
+  const handleInput = (text: string) => {
+    setQuery(text);
+    const matches = allDrugs.filter(drug => drug.toLowerCase().includes(text.toLowerCase()));
+    setFilteredSuggestions(matches);
+  };
 
-    router.push({
-      pathname: '/search/DrugResultScreen',
-      params: { query },
-    });
+  const handleSearch = (drug: string) => {
+    router.push({ pathname: '/results', params: { drug } });
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container} keyboardShouldPersistTaps="handled">
+      <TouchableOpacity onPress={() => router.back()} style={styles.backRow}>
+        <Ionicons name="arrow-back" size={20} color="black" />
+        <Text style={styles.breadcrumb}>Home / Search</Text>
+      </TouchableOpacity>
+
       <TextInput
-        placeholder="Enter drug name"
-        style={styles.input}
+        placeholder="Search for a drug..."
         value={query}
-        onChangeText={setQuery}
+        onChangeText={handleInput}
+        onSubmitEditing={() => handleSearch(query)}
+        style={styles.searchBar}
       />
-      <Button title="Search" onPress={handleSearch} />
-    </View>
+
+      {filteredSuggestions.map((suggestion, index) => (
+        <TouchableOpacity key={index} onPress={() => handleSearch(suggestion)}>
+          <Text style={styles.suggestion}>{suggestion}</Text>
+        </TouchableOpacity>
+      ))}
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-  },
-  input: {
+  container: { flex: 1, padding: 10, backgroundColor: '#fff', marginTop: 30 },
+  backRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 10 },
+  breadcrumb: { marginLeft: 6, color: '#0B82DC', fontSize: 13 },
+  searchBar: {
     borderWidth: 1,
     borderColor: '#ccc',
-    padding: 12,
     borderRadius: 8,
-    marginBottom: 15,
+    padding: 10,
+    marginBottom: 10,
   },
+  suggestion: { fontSize: 14, paddingVertical: 5, color: '#333' },
 });

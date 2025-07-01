@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity, TextInput } from 'react-native';
 import * as Location from 'expo-location';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
@@ -105,7 +105,24 @@ const pharmaciesData = {
       number: '6990002',
     },
   ],
-
+  Tiko: [
+    {
+      id: 11,
+      name: 'Limbe Central Pharmacy',
+      latitude: 4.0243,
+      longitude: 9.2108,
+      location: 'Down Beach\nLimbe',
+      number: '6990001',
+    },
+    {
+      id: 12,
+      name: 'Atlantic Pharmacy',
+      latitude: 4.0182,
+      longitude: 9.2166,
+      location: 'Mile 1\nLimbe',
+      number: '6990002',
+    },
+  ],
   Kumba: [
     {
       id: 11,
@@ -124,35 +141,7 @@ const pharmaciesData = {
       number: '6990002',
     },
   ],
-
-  tiko: [
-    {
-      id: 11,
-      name: 'Limbe Central Pharmacy',
-      latitude: 4.0243,
-      longitude: 9.2108,
-      location: 'Down Beach\nLimbe',
-      number: '6990001',
-    },
-    {
-      id: 12,
-      name: 'Atlantic Pharmacy',
-      latitude: 4.0182,
-      longitude: 9.2166,
-      location: 'Mile 1\nLimbe',
-      number: '6990002',
-    },
-    {
-      id: 12,
-      name: 'Atlantic Pharmacy',
-      latitude: 4.0182,
-      longitude: 9.2166,
-      location: 'Mile 1\nLimbe',
-      number: '6990002',
-    },
-  ],
-
-  Manfe: [
+Manfe: [
     {
       id: 11,
       name: 'Limbe Central Pharmacy',
@@ -186,7 +175,8 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
 export default function PharmaciesScreen() {
   const [selectedTown, setSelectedTown] = useState('Buea');
   const [userLocation, setUserLocation] = useState(null);
-   const router = useRouter();
+  const [searchQuery, setSearchQuery] = useState('');
+  const router = useRouter();
 
   useEffect(() => {
     (async () => {
@@ -201,20 +191,18 @@ export default function PharmaciesScreen() {
   const towns = Object.keys(pharmaciesData);
   const pharmacies = pharmaciesData[selectedTown] || [];
 
-  const sortedPharmacies = pharmacies.map((ph) => {
-    const distance = userLocation
-      ? calculateDistance(userLocation.latitude, userLocation.longitude, ph.latitude, ph.longitude)
-      : null;
-    return { ...ph, distance };
-  });
+  const sortedPharmacies = pharmacies
+    .map((ph) => {
+      const distance = userLocation
+        ? calculateDistance(userLocation.latitude, userLocation.longitude, ph.latitude, ph.longitude)
+        : null;
+      return { ...ph, distance };
+    })
+    .filter(ph => ph.name.toLowerCase().includes(searchQuery.toLowerCase()));
 
   return (
- 
-     
-
-
     <ScrollView style={styles.container}>
-       <TouchableOpacity onPress={() => router.back()} style={styles.backRow}>
+      <TouchableOpacity onPress={() => router.back()} style={styles.backRow}>
         <Ionicons name="arrow-back" size={20} color="black" />
         <Text style={styles.breadcrumb}>Home / pharmacy / South-West</Text>
       </TouchableOpacity>
@@ -228,6 +216,13 @@ export default function PharmaciesScreen() {
           </TouchableOpacity>
         ))}
       </View>
+
+      <TextInput
+        style={styles.searchInput}
+        placeholder="Search Pharmacy"
+        value={searchQuery}
+        onChangeText={setSearchQuery}
+      />
 
       <Text style={styles.subTitle}>Pharmacies in {selectedTown}</Text>
 
@@ -251,11 +246,11 @@ export default function PharmaciesScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { 
-    flex: 1, 
-    backgroundColor: '#fff', 
-    padding: 10, 
-    marginTop:40,
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    padding: 10,
+    marginTop: 40,
   },
   backRow: {
     flexDirection: 'row',
@@ -267,13 +262,57 @@ const styles = StyleSheet.create({
     fontSize: 13,
     marginLeft: 6,
   },
-  regionTitle: { fontSize: 16, fontWeight: 'bold', marginBottom: 10 },
-  townSelector: { flexDirection: 'row', flexWrap: 'wrap', marginBottom: 20 },
-  townButton: { flexDirection: 'row', alignItems: 'center', marginRight: 10, marginBottom: 5 },
-  townText: { marginLeft: 5, color: '#0B82DC', textDecorationLine: 'underline', fontSize: 13 },
-  subTitle: { fontSize: 14, fontWeight: '600', marginBottom: 6 },
-  tableHeader: { flexDirection: 'row', backgroundColor: '#d2f0dc', paddingVertical: 6 },
-  tableRow: { flexDirection: 'row', paddingVertical: 6, borderBottomWidth: 0.5, borderBottomColor: '#ddd' },
-  cell: { flex: 1, fontSize: 12 },
-  header: { fontWeight: 'bold' },
+  regionTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  townSelector: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginBottom: 20,
+  },
+  townButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 10,
+    marginBottom: 5,
+  },
+  townText: {
+    marginLeft: 5,
+    color: '#0B82DC',
+    textDecorationLine: 'underline',
+    fontSize: 13,
+  },
+  subTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    marginBottom: 6,
+  },
+  tableHeader: {
+    flexDirection: 'row',
+    backgroundColor: '#d2f0dc',
+    paddingVertical: 6,
+  },
+  tableRow: {
+    flexDirection: 'row',
+    paddingVertical: 6,
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#ddd',
+  },
+  cell: {
+    flex: 1,
+    fontSize: 12,
+  },
+  header: {
+    fontWeight: 'bold',
+  },
+  searchInput: {
+    height: 40,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 15,
+  },
 });

@@ -53,6 +53,12 @@ export default function RootLayout() {
           headerTitle: "profile page",
           headerShown: false
         }} />
+        <Stack.Screen 
+        name="pharmacy_info" 
+        options={{
+          headerTitle: "profile page",
+          headerShown: false
+        }} />
     </Stack> 
     </ThemeProvider>
   )
