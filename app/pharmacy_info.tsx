@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Linking, ScrollView } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import  {pharmacies}  from '../app/data/pharmacies';
+import  {pharmacies}  from './pharmacies';
 import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 
 

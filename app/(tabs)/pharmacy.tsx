@@ -29,6 +29,11 @@ const router = useRouter();
       <Text style={styles.herbalistTitle}>🌿 Cameroon Herbalist</Text>
 
       <View style={styles.herbalistRow}>
+        <Text style={styles.herbalistDesc}>Tropical santé, Yde</Text>
+        <Text style={styles.herbalistPhone}>📞 682258144</Text>
+      </View>
+
+      <View style={styles.herbalistRow}>
         <Text style={styles.herbalistDesc}>Solution Bio, Fak, Yde</Text>
         <Text style={styles.herbalistPhone}>📞 682258144</Text>
       </View>
@@ -53,7 +58,7 @@ const router = useRouter();
         <Text style={styles.herbalistPhone}>📞 672000001</Text>
       </View>
 
-      <TouchableOpacity style={styles.herbalistBtn}>
+      <TouchableOpacity style={styles.herbalistBtn} onPress={() => router.push('/herbalist')}>
         <Text style={styles.herbalistBtnText}>View more Cameroonist</Text>
       </TouchableOpacity>
     </View>

@@ -1,121 +1,107 @@
-import React ,{ useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, Image } from 'react-native';
-import * as FileSystem from 'expo-file-system';
-import * as Sharing from 'expo-sharing';
+import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Alert,
+  Image,
+} from 'react-native';
 import * as Linking from 'expo-linking';
+import * as Sharing from 'expo-sharing';
+import { Asset } from 'expo-asset';
 import { Ionicons } from '@expo/vector-icons';
 
 const documents = [
   {
-    name: 'Cameroon National Essential Medicines List 2022',
-    fileName: 'cameroon-neml-2022.pdf',
+    title: 'Cameroon National Essential Medicines List 2022',
+    file: require('../../assets/documents/cameroon-neml-2022.pdf'),
   },
   {
-    name: 'Guide d’homologation des produits pharmaceutiques (29 Juin 2023)',
-    fileName: 'Guide-d_homologation-des-produits-pharmaceutiques-29_06_2023.pdf',
+    title: 'Guide d’homologation des produits pharmaceutiques (29 Juin 2023)',
+    file: require('../../assets/documents/Guide-d_homologation-des-produits-pharmaceutiques-29_06_2023.pdf'),
   },
   {
-    name: 'Guide: Writing Final Year Project Reports (March 2025)',
-    fileName: 'Guidelines for writing Final year  Project Reports_March 2025.pdf',
+    title: 'Guide: Writing Final Year Project Reports (March 2025)',
+    file:  require('../../assets/documents/Guidelines for writing Final year  Project Reports_March 2025.pdf'),
   },
   {
-    name: 'Medical Law in Cameroon',
-    fileName: 'law-medecine.pdf',
-  },
+    title: 'Medical Law in Cameroon',
+    file: require('../../assets/documents/law-medecine.pdf'),  },
   {
-    name: 'Politique pharmaceutique nationale Cameroun',
-    fileName: 'Politique-pharmaceutique-nationale-Cameroun_PPN.pdf',
+    title: 'Politique pharmaceutique nationale Cameroun',
+    fileName:  require('../../assets/documents/Politique-pharmaceutique-nationale-Cameroun_PPN.pdf'),
   },
 ];
 
 export default function DocumentsScreen() {
-  const [downloadingDoc, setDownloadingDoc] = useState<string | null>(null);
+  const [downloading, setDownloading] = useState<string | null>(null);
 
-  const openDocument = async (fileName: string) => {
+ const openDocument = async (file: any) => {
   try {
-    const assetUri = FileSystem.bundleDirectory + 'assets/documents/' + fileName;
-    const destUri = FileSystem.documentDirectory + fileName;
+    const asset = Asset.fromModule(file);
+    await asset.downloadAsync();
 
-    await FileSystem.copyAsync({ from: assetUri, to: destUri });
+    const uri = asset.localUri || asset.uri;
 
-    await Linking.openURL(destUri);
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      Alert.alert('Error', 'Could not open document: ' + error.message);
+    const isAvailable = await Sharing.isAvailableAsync();
+
+    if (isAvailable) {
+      await Sharing.shareAsync(uri);
     } else {
-      Alert.alert('Error', 'Could not open document: Unknown error occurred');
+      Alert.alert('Erreur', 'Impossible d’ouvrir ce document automatiquement. Téléchargez-le manuellement.');
     }
+  } catch (err: any) {
+    Alert.alert('Erreur', err.message || 'Erreur inconnue');
   }
 };
 
-const downloadDocument = async (title: string, fileName: string) => {
-  try {
-    const assetUri = FileSystem.bundleDirectory + 'assets/documents/' + fileName;
-    const destUri = FileSystem.documentDirectory + fileName;
+  const downloadDocument = async (file: any) => {
+    try {
+      const asset = Asset.fromModule(file);
+      await asset.downloadAsync();
 
-    await FileSystem.copyAsync({ from: assetUri, to: destUri });
+      const uri = asset.localUri || asset.uri;
+      const isAvailable = await Sharing.isAvailableAsync();
 
-    const isShareAvailable = await Sharing.isAvailableAsync();
-
-    if (isShareAvailable) {
-      await Sharing.shareAsync(destUri);
-    } else {
-      Alert.alert('Saved', `Document saved at: ${destUri}`);
+      if (isAvailable) {
+        await Sharing.shareAsync(uri);
+      } else {
+        Alert.alert('Info', `Document sauvegardé localement : ${uri}`);
+      }
+    } catch (err: any) {
+      Alert.alert('Erreur', err.message || 'Erreur lors du téléchargement');
     }
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      Alert.alert('Error', 'Could not download document: ' + error.message);
-    } else {
-      Alert.alert('Error', 'Could not download document: Unknown error occurred');
-    }
-  }
-};
+  };
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.title}>
-        Discover what the Cameroon Law says about Pharmacies and drugs
-      </Text>
+      <Text style={styles.title}>📘 Documents PDF disponibles</Text>
 
-      <View style={styles.sortRow}>
-        <Text style={styles.sortLeft}>All legal documents</Text>
-        <Text style={styles.sortRight}>Sort by ▼</Text>
-      </View>
-
-      {documents.map((doc, index) => (
-        <TouchableOpacity key={index} onPress={() => openDocument(doc.fileName)}>
+      {documents.map((doc, idx) => (
+        <TouchableOpacity key={idx} onPress={() => openDocument(doc.file)}>
           <View style={styles.card}>
-            <View style={styles.cardRow}>
-              <Image
-                source={require('../../assets/images/pdf-thumbnail.png')}
-                style={styles.thumbnail}
-              />
-              <View style={{ flex: 1, marginLeft: 10 }}>
-                <Text style={styles.cardTitle}>{doc.name}</Text>
-                <Text style={styles.cardDescription}>
-                  Tap to open this document about Cameroon pharmaceutical laws and guides.
-                </Text>
-              </View>
-              <TouchableOpacity
-              onPress={() => downloadDocument(doc.name, doc.fileName)}
-              disabled={downloadingDoc === doc.fileName}
-            >
+            <Image
+              source={require('../../assets/images/pdf-thumbnail.png')}
+              style={styles.icon}
+            />
+            <View style={styles.cardContent}>
+              <Text style={styles.cardTitle}>{doc.title}</Text>
+              <Text style={styles.cardSubtitle}>Touchez pour ouvrir le PDF</Text>
+            </View>
+
+            <TouchableOpacity onPress={() => downloadDocument(doc.file)}>
               <Ionicons
-                name={
-                  downloadingDoc === doc.fileName
-                    ? 'checkmark-done-circle-outline'
-                    : 'download-outline'
-                }
-                size={22}
-                color={downloadingDoc === doc.fileName ? '#4CAF50' : '#0B82DC'}
+                name="download-outline"
+                size={24}
+                color="#0B82DC"
+                style={{ marginLeft: 10 }}
               />
             </TouchableOpacity>
-            </View>
           </View>
         </TouchableOpacity>
       ))}
-
-      <Text style={styles.footerTitle}>Visit some Cameroon legal websites</Text>
     </ScrollView>
   );
 }
@@ -124,63 +110,40 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingHorizontal: 15,
+    padding: 15,
     paddingTop: 20,
   },
   title: {
-    fontSize: 14,
-    textAlign: 'center',
-    fontWeight: '500',
-    marginBottom: 20,
-  },
-  sortRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 15,
-  },
-  sortLeft: {
-    fontSize: 13,
+    fontSize: 16,
     fontWeight: '600',
-  },
-  sortRight: {
-    fontSize: 13,
-    color: '#555',
+    marginBottom: 20,
+    textAlign: 'center',
   },
   card: {
-    backgroundColor: '#f8f8f8',
-    padding: 12,
+    backgroundColor: '#f4f7fa',
     borderRadius: 8,
+    padding: 12,
     marginBottom: 12,
+    borderColor: '#dde5f2',
     borderWidth: 1,
-    borderColor: '#e0e0e0',
-  },
-  cardRow: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  thumbnail: {
+  icon: {
     width: 40,
     height: 40,
-    borderRadius: 4,
     resizeMode: 'contain',
+    marginRight: 10,
   },
-  downloadIcon: {
-    width: 24,
-    height: 24,
-    resizeMode: 'contain',
+  cardContent: {
+    flex: 1,
   },
   cardTitle: {
-    fontWeight: '600',
     fontSize: 14,
-    marginBottom: 4,
-  },
-  cardDescription: {
-    fontSize: 12,
-    color: '#555',
-  },
-  footerTitle: {
-    marginTop: 25,
     fontWeight: '600',
-    fontSize: 13,
+  },
+  cardSubtitle: {
+    fontSize: 12,
+    color: '#666',
   },
 });
